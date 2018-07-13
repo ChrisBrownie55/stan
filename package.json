@@ -1,0 +1,27 @@
+{
+  "name": "stan",
+  "version": "1.0.0",
+  "description": "An immutable state manager with subscribe and unsubscribe features based on git.io/Valoo",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChrisBrownie55/stan.git"
+  },
+  "keywords": [
+    "state",
+    "subscribe",
+    "unsubscribe"
+  ],
+  "author": "Christopher Brown",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ChrisBrownie55/stan/issues"
+  },
+  "homepage": "https://github.com/ChrisBrownie55/stan#readme",
+  "devDependencies": {
+    "jest": "^23.4.0"
+  }
+}
