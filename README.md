@@ -1,5 +1,5 @@
 <h1 align=center> Stanager </h1>
-<p align=center>_Stanager is an immutable state manager with subscribe and unsubscribe features based on git.io/Valoo_</p>
+<p align=center><em>Stanager is an immutable state manager with subscribe and unsubscribe features based on git.io/Valoo</em></p>
 
 ## Installation
 
@@ -23,7 +23,7 @@ shoppingCart.value = shoppingCart.value.concat(['meatballs', 'flat bread')
 console.log(shoppingCart.value)
 // output: ['meatballs', 'flat bread']
 
-// subscribe to changes:
+// create listener function:
 const changeLogger = (newCart, oldCart) => {
   const changes = {
     removed: oldCart.filter(item => newCart.indexOf(item) === -1),
@@ -34,6 +34,7 @@ const changeLogger = (newCart, oldCart) => {
   changes.added.forEach(item => console.log(`added: '${item}'`))
 }
 
+// subscribe to changes:
 shoppingCart.subscribe(changeLogger)
 
 // invoke listener(s):
