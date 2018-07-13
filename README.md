@@ -1,4 +1,4 @@
-<h1 align=center> Stanager </h1>
+<h1 align=center> Stanager (stan) </h1>
 <p align=center><em>Stanager is an immutable state manager with subscribe and unsubscribe features based on git.io/Valoo</em></p>
 
 ## Installation
@@ -10,12 +10,12 @@ npm i stanager
 ## Usage
 
 ```js
-const stanager = require('stanager')
+const stan = require('stanager')
 // or
-import stanager from 'stanager'
+import stan from 'stanager'
 
 // create an observable value:
-const shoppingCart = stanager(['bread'])
+const shoppingCart = stan(['bread'])
 
 // assign new value:
 shoppingCart.value = shoppingCart.value.concat(['meatballs', 'flat bread')
