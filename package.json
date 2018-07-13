@@ -1,5 +1,5 @@
 {
-  "name": "stan",
+  "name": "stanager",
   "version": "1.0.0",
   "description": "An immutable state manager with subscribe and unsubscribe features based on git.io/Valoo",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ChrisBrownie55/stan.git"
+    "url": "git+https://github.com/ChrisBrownie55/stanager.git"
   },
   "keywords": [
     "state",
@@ -18,9 +18,9 @@
   "author": "Christopher Brown",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ChrisBrownie55/stan/issues"
+    "url": "https://github.com/ChrisBrownie55/stanager/issues"
   },
-  "homepage": "https://github.com/ChrisBrownie55/stan#readme",
+  "homepage": "https://github.com/ChrisBrownie55/stanager#readme",
   "devDependencies": {
     "jest": "^23.4.0"
   }
