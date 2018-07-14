@@ -19,6 +19,7 @@
     "semi": "off",
     "max-len": ["warn", 160],
     "arrow-parens": "off",
-    "quote-props": ["error", "as-needed"]
+    "quote-props": ["error", "as-needed"],
+    "valid-jsdoc": "error"
   }
 }

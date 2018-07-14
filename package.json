@@ -4,7 +4,8 @@
   "description": "An immutable state manager with subscribe and unsubscribe features based on git.io/Valoo",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "docs": "jsdoc index.js README.md -d docs"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,7 @@
   },
   "homepage": "https://github.com/ChrisBrownie55/stanager#readme",
   "devDependencies": {
-    "jest": "^23.4.0"
+    "jest": "^23.4.0",
+    "jsdoc": "^3.5.5"
   }
 }
