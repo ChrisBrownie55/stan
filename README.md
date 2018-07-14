@@ -64,4 +64,4 @@ When you run `stan(value)` it returns an object with four methods:
 }
 ```
 
-You can use these four methods to _listen_, and _unlisten_ to value changes, and to change/get the value, as per their names.
+You can use these four methods to _listen_, and _unlisten_ to value changes, and to _set/get_ the value, as per their names.
