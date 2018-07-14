@@ -1,5 +1,5 @@
-<h1 align=center> Stanager (stan) </h1>
-<p align=center><em>Stanager is an immutable state manager with subscribe and unsubscribe features based on git.io/Valoo</em></p>
+<h1 align=center> 👩‍💼 Stanager (stan) </h1>
+<p align=center><em>Stanager is an immutable state manager with subscribe and unsubscribe features based on https://git.io/Valoo</em></p>
 
 ## Installation
 
@@ -64,4 +64,4 @@ When you run `stan(value)` it returns an object with four methods:
 }
 ```
 
-You can use these four methods to _listen_, and _unlisten_ to value changes, and to _set/get_ the value, as per their names.
+You can use these four methods to _listen_, and _unlisten_ to value changes, and to _set/get_ the value, as per their names. However, you __cannot__ mutate the data... well you can, but it's hidden behind `Symbol('value')` and the listeners are hidden behind `Symbol('subscriberList')`. So, via normal means, it is impossible to mutate data, even arrays and objects are recursively copied to disallow mutation of any sort.
