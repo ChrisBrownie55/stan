@@ -10,10 +10,16 @@ npm i stanager
 
 ## Usage
 
+Hotlink it from __https://unpkg.com/stanager__, or if you need to use ES6 modules try __https://unpkg.com/stanager/index.mjs__.
+
 ```js
 const stan = require('stanager')
 // or
 import stan from 'stanager'
+// or
+import stan from 'https://unpkg.com/stanager'
+// or
+import stan from 'https://unpkg.com/stanager/index.mjs'
 
 // create an observable value:
 const shoppingCart = stan(['bread'])
@@ -52,6 +58,37 @@ shoppingCart.value
 // output: 
 ```
 
+As of __version 1.1.0__, you not only have _listeners_, but you also have _modifiers_. These are created the same way as listeners, but instead of just passing the function to `subscribe()`, you also need to pass in `true` as the second argument. `subscribe(func, true)` creates a modifier.
+
+```js
+const shoppingCart = stan({
+  products: [],
+})
+
+let discount = 1 - 0.25 // 25% off
+const discountApplier = cart => ({
+  ...cart,
+  products: cart.products.map(product => ({
+    ...product,
+    discount: product.discount || product.price * discount,
+  })),
+})
+
+shoppingCart.subscribe(discountApplier, true)
+let currentCart = shoppingCart.value
+currentCart.products.push({
+  name: 'blouse',
+  price: 38
+})
+shoppingCart.value = currentCart
+
+/* output:
+
+{ products: [ { name: 'blouse', price: 38, discount: 28.5 } ] }
+
+*/
+```
+
 ## How it works:
 
 When you run `stan(value)` it returns an object with four methods:
@@ -65,4 +102,4 @@ When you run `stan(value)` it returns an object with four methods:
 }
 ```
 
-You can use these four methods to _listen_, and _unlisten_ to value changes, and to _set/get_ the value, as per their names. However, you __cannot__ mutate the data... well you can, but it's hidden behind `Symbol('value')` and the listeners are hidden behind `Symbol('subscriberList')`. So, via normal means, it is impossible to mutate data, even arrays and objects are recursively copied to disallow mutation of any sort.
+You can use these four methods to _listen_, and _unlisten_ to value changes, and to _set/get_ the value, as per their names. However, you __cannot__ mutate the data, hence the term immutable. Even if you pass in an array or object and you change some stuff elsewhere, it won't affect this because everything is recursively copied.

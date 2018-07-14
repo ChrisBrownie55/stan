@@ -16,25 +16,25 @@ const copyOf = value => {
   return copiedValue
 }
 
-const stan = initialValue => {
-  const value = Symbol('value')
-  const subscriberList = Symbol('subscriberList')
+const stan = (value, subscriberList=[], modifierList=[]) => {
   return {
-    [subscriberList]: [],
-    subscribe(subscriberFunction) {
-      this[subscriberList].push(subscriberFunction)
+    subscribe(subscriberFunction, isModifier=false) {
+      if (isModifier) modifierList.push(subscriberFunction)
+      else subscriberList.push(subscriberFunction)
     },
-    unsubscribe(subscriber) {
-      this[subscriberList] = this[subscriberList].filter(currentSubscriber => currentSubscriber !== subscriber)
+    unsubscribe(subscribedFunction) {
+      [subscriberList, modifierList] = [subscriberList, modifierList].map(
+        list => list.filter(currentFunction => currentFunction !== subscribedFunction)
+      )
     },
 
-    [value]: initialValue,
     get value() {
-      return copyOf(this[value])
+      return copyOf(value)
     },
     set value(newValue) {
-      this[subscriberList].forEach(subscriber => subscriber(copyOf(newValue), copyOf(this[value])))
-      this[value] = copyOf(newValue)
+      newValue = modifierList.reduce((finalValue, modifier) => modifier(finalValue), copyOf(newValue))
+      subscriberList.forEach(subscriber => subscriber(newValue, copyOf(value)))
+      value = copyOf(newValue)
     },
   }
 }

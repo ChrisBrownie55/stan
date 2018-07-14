@@ -1,30 +1,24 @@
 const stan = require('./index.js')
 
-const actualValue = stanObject => stanObject[Object.getOwnPropertySymbols(stanObject)[1]]
-const getSubscriptions = stanObject => stanObject[Object.getOwnPropertySymbols(stanObject)[0]]
 
 it('Number assignment', () => {
   const num = stan(0)
 
   expect(num.value).toBe(0)
-  expect(actualValue(num)).toBe(0)
 
   num.value = Infinity
 
   expect(num.value).toBe(Infinity)
-  expect(actualValue(num)).toBe(Infinity)
 })
 
 it('String assignment', () => {
   const string = stan('')
 
   expect(string.value).toBe('')
-  expect(actualValue(string)).toBe('')
 
   string.value = 'Hello World'
 
   expect(string.value).toBe('Hello World')
-  expect(actualValue(string)).toBe('Hello World')
 })
 
 it('Object assignment', () => {
@@ -32,8 +26,6 @@ it('Object assignment', () => {
 
   expect(object.value).not.toBe({})
   expect(object.value).toEqual({})
-  expect(actualValue(object)).not.toBe({})
-  expect(actualValue(object)).toEqual({})
 
   const newObject = {
     a: 'b',
@@ -43,10 +35,8 @@ it('Object assignment', () => {
   }
   object.value = newObject
 
-  expect(object.value).toBe(newObject)
+  expect(object.value).not.toBe(newObject)
   expect(object.value).toEqual(newObject)
-  expect(actualValue(object)).toBe(newObject)
-  expect(actualValue(object)).toEqual(newObject)
 })
 
 it('Array assignment', () => {
@@ -54,8 +44,6 @@ it('Array assignment', () => {
 
   expect(array.value).not.toBe([])
   expect(array.value).toEqual([])
-  expect(actualValue(array)).not.toBe([])
-  expect(actualValue(array)).toEqual([])
 
   const newArray = [
     'a',
@@ -67,8 +55,6 @@ it('Array assignment', () => {
 
   expect(array.value).not.toBe(newArray)
   expect(array.value).toEqual(newArray)
-  expect(actualValue(array)).not.toBe(newArray)
-  expect(actualValue(array)).toEqual(newArray)
 })
 
 describe('Subscriptions', () => {
@@ -91,21 +77,18 @@ describe('Subscriptions', () => {
       it('Is called once', () => expect(subscriber).toHaveBeenCalledTimes(1))
     })
 
-    it('Subscriber is registered in array', () => {
-      state.subscribe(subscriber)
-
-      expect(getSubscriptions(state).length).toBe(1)
-      expect(getSubscriptions(state)[0]).toBe(subscriber)
-    })
+    state.subscribe(subscriber)
 
     state.value = {
       ...state.value,
       cart: state.value.cart.concat('nacho cheese'),
     }
 
-    it('Function was removed from subscription list', () => {
-      state.unsubscribe(subscriber)
-      expect(getSubscriptions(state).length).toBe(0)
+    state.unsubscribe(subscriber)
+
+    it('Is not called after unsubscription', () => {
+      state.value = 'should not fire off `subscription` again'
+      expect(subscriber).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -117,34 +100,71 @@ describe('Subscriptions', () => {
 
       state.value = {}
 
-      expect(getSubscriptions(state).length).toBe(3)
-      subscribers.forEach(subscriber => expect(subscriber).toHaveBeenCalledTimes(1))
+      subscribers.forEach(subscriber => expect(subscriber).toHaveBeenCalled())
     })
 
     it('Are removed on unsubscribe', () => {
       subscribers.forEach(currentSubscriber => state.unsubscribe(currentSubscriber))
-      expect(getSubscriptions(state).length).toBe(0)
+      state.value = 'none of `subscribers` should have been called again'
+      subscribers.forEach(subscriber => expect(subscriber).toHaveBeenCalledTimes(1))
     })
   })
 
   describe('Multiple of one subscriber function', () => {
     const subscriber = jest.fn(() => {})
 
-    it('Is called multiple times',
-      () => {
-        state.subscribe(subscriber)
-        state.subscribe(subscriber)
-        state.subscribe(subscriber)
+    it('Is called multiple times', () => {
+      state.subscribe(subscriber)
+      state.subscribe(subscriber)
+      state.subscribe(subscriber)
 
-        state.value = {}
+      state.value = {}
 
-        expect(subscriber).toHaveBeenCalledTimes(3)
-      })
+      expect(subscriber).toHaveBeenCalledTimes(3)
+    })
 
-    it('Is removed on unsubscribe',
-      () => {
-        state.unsubscribe(subscriber)
-        expect(getSubscriptions(state).length).toBe(0)
-      })
+    it('Is removed on unsubscribe', () => {
+      state.unsubscribe(subscriber)
+      state.value = '`subscriber` should not be called three more times'
+      expect(subscriber).toHaveBeenCalledTimes(3)
+    })
+  })
+})
+
+describe('Immutability of:', () => {
+  it('String', () => {
+    const string = stan('I am immutable')
+    string.value[0] = 'U'
+    expect(string.value[0]).toBe('I')
+  })
+
+  it('Array', () => {
+    const array = stan([1, 2, 3, 4, 5])
+    array.value.splice(3)
+    expect(array.value).toEqual([1, 2, 3, 4, 5])
+  })
+
+  it('Object', () => {
+    const object = stan({
+      isImmutable: true,
+    })
+    object.value.isImmutable = false
+    expect(object.value).toEqual({
+      isImmutable: true,
+    })
+  })
+})
+
+describe('Modifiers', () => {
+  it('Are called before listeners', () => {
+    const num = stan(0)
+
+    const modifier = value => value * 2
+    const listener = value => expect(value).toBe(100)
+
+    num.subscribe(modifier, true)
+    num.subscribe(listener)
+
+    num.value = 50
   })
 })
