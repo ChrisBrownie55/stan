@@ -18,10 +18,7 @@ import stan from 'stanager'
 const shoppingCart = stan(['bread'])
 
 // assign new value:
-shoppingCart.value = shoppingCart.value.concat(['meatballs', 'flat bread')
-
-console.log(shoppingCart.value)
-// output: ['meatballs', 'flat bread']
+shoppingCart.value = shoppingCart.value.concat(['meatballs', 'flat bread'])
 
 // create listener function:
 const changeLogger = (newCart, oldCart) => {
@@ -41,11 +38,30 @@ shoppingCart.subscribe(changeLogger)
 shoppingCart.value = shoppingCart.value.filter(item => item.indexOf('bread') === -1).concat('marinara sauce')
 
 /* output:
+
 removed: 'bread'
 removed: 'flat bread'
 added: 'marinara sauce'
+
 */
 
 // get current value:
 shoppingCart.value
+
+// output: 
 ```
+
+## How it works:
+
+When you run `stan(value)` it returns an object with four methods:
+
+```js
+{
+  subscribe(...) {...},
+  unsubscribe(...) {...},
+  get value() {...},
+  set value(...) {...},
+}
+```
+
+You can use these four methods to _listen_, and _unlisten_ to value changes, and to change/get the value, as per their names.
