@@ -1,7 +1,7 @@
 <h1 align=center> 👩‍💼 Stanager (stan) </h1>
 <p align=center><em>Stanager is an immutable state manager with subscribe and unsubscribe features based on https://git.io/Valoo</em></p>
 
-![Screenshot of stanager in action via carbon.now.sh](Screenshots/stanager-carbon.png)
+<p align=center><img width=650 alt='Screenshot of stanager in action via carbon.now.sh' src='Screenshots/stanager-carbon.png' /></p>
 ## Installation
 
 ```bash
@@ -54,18 +54,19 @@ added: 'marinara sauce'
 
 // get current value:
 shoppingCart.value
-
-// output: 
 ```
-
-As of __version 1.1.0__, you not only have _listeners_, but you also have _modifiers_. These are created the same way as listeners, but instead of just passing the function to `subscribe()`, you also need to pass in `true` as the second argument. `subscribe(func, true)` creates a modifier.
+### Version 1.1.0
+You not only have _listeners_, but you also have **_modifiers_**. These are created the same way as listeners, but instead of just passing the function to `subscribe()`, you also need to pass in `true` as the second argument. `subscribe(func, true)` creates a modifier.
 
 ```js
+// create an observabe value:
 const shoppingCart = stan({
   products: [],
 })
 
 let discount = 1 - 0.25 // 25% off
+
+// create modifier function
 const discountApplier = cart => ({
   ...cart,
   products: cart.products.map(product => ({
@@ -74,19 +75,32 @@ const discountApplier = cart => ({
   })),
 })
 
+// subscribe to changes and modify them
 shoppingCart.subscribe(discountApplier, true)
+
 let currentCart = shoppingCart.value
 currentCart.products.push({
   name: 'blouse',
   price: 38
 })
+
+// assign new value
 shoppingCart.value = currentCart
 
 /* output:
 
-{ products: [ { name: 'blouse', price: 38, discount: 28.5 } ] }
+{
+  products: [{
+    name: 'blouse',
+    price: 38,
+    discount: 28.5
+  }]
+}
 
 */
+
+// unsubscribe modifier
+shoppingCart.unsubscribe(discountApplier)
 ```
 
 ## How it works:
