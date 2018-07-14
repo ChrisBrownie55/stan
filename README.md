@@ -1,6 +1,7 @@
 <h1 align=center> 👩‍💼 Stanager (stan) </h1>
 <p align=center><em>Stanager is an immutable state manager with subscribe and unsubscribe features based on https://git.io/Valoo</em></p>
 
+![Screenshot of stanager in action via carbon.now.sh](Screenshots/stanager-carbon.png)
 ## Installation
 
 ```bash
