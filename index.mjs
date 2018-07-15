@@ -31,7 +31,6 @@ const copyOf = value => {
  * @return  {Object}
  */
 const stan = (value, subscriberList=[], modifierList=[]) => {
-
   /**
    * Callback for observing changes in a value
    * @callback Callback
