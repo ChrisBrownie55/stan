@@ -13,6 +13,8 @@ npm i stanager
 
 Hotlink it from __https://unpkg.com/stanager__, or if you need to use ES6 modules try __https://unpkg.com/stanager/index.mjs__.
 
+See [interactive Codepen demo.](https://codepen.io/chbchb55/pen/MBazqy)
+
 ```js
 const stan = require('stanager')
 // or
