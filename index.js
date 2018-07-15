@@ -82,4 +82,6 @@ const stan = (value, subscriberList=[], modifierList=[]) => {
   }
 }
 
-module.exports = stan
+if (typeof module === 'object') {
+  module.exports = stan
+}
